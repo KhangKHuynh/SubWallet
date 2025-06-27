@@ -9,10 +9,10 @@ namespace SubWallet.Models
     }
     public class Subscription
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public decimal cost { get; set; }
-        public DateTime StartDate { get; set; }
+        public required int ID { get; set; }
+        public required string Name { get; set; }
+        public required decimal Cost { get; set; }
+        public required DateTime StartDate { get; set; }
         public BillingCycle Cycle { get; set; }
         
         private DateTime? _nextDate;
@@ -46,6 +46,7 @@ namespace SubWallet.Models
                 _nextDate = value;
             }
         }
+
         public void ResetNextDate()
         {
             _nextDate = null;
