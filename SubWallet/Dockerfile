@@ -1,4 +1,4 @@
-# Use official .NET 8 ASP.NET runtime image as base
+# Use official .NET 9 ASP.NET runtime image as base
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 80

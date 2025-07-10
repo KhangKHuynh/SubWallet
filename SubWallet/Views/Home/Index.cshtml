@@ -1,8 +1,43 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@{
+  ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+  <h1 class="display-4">Welcome</h1>
+  <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<hr />
+
+
+
+<h2>Welcome to SubWallet</h2>
+
+<button id="addSubBtn">Add Sample Subscription</button>
+
+<script>
+  document.getElementById('addSubBtn').addEventListener('click', () => {
+    const subscription = {
+      ID: 1,
+      Name: "Netflix",
+      Cost: 14.99,
+      StartDate: new Date().toISOString(),
+      Cycle: "Monthly"
+    };
+
+    fetch('https://localhost:5001/api/subscriptions/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(subscription)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Backend response:', data);
+      alert('Subscription added!');
+    })
+    .catch(err => console.error('Error:', err));
+  });
+</script>
