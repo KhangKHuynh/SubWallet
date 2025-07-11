@@ -18,3 +18,10 @@ public class SubscriptionsController : ControllerBase
         return Ok(new { message = "Subscription added", subscription });
     }
 }
+public class SubscriptionApiController : Controller
+{
+    public IActionResult Subscription()
+    {
+        return View();
+    }
+}
