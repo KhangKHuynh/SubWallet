@@ -1,4 +1,6 @@
 
+using Microsoft.EntityFrameworkCore;
+
 namespace SubWallet.Models
 {
     public enum BillingCycle
@@ -8,6 +10,7 @@ namespace SubWallet.Models
         Yearly,
         BiWeekly,
     }
+
     public class Subscription
     {
         public required int ID { get; set; }
@@ -15,7 +18,7 @@ namespace SubWallet.Models
         public required decimal Cost { get; set; }
         public required DateTime StartDate { get; set; }
         public BillingCycle Cycle { get; set; }
-        
+
         private DateTime? _nextDate;
 
         public DateTime NextDate
@@ -40,12 +43,9 @@ namespace SubWallet.Models
                     default:
                         return StartDate;
                 }
-                
+
             }
-            set
-            {
-                _nextDate = value;
-            }
+            set { _nextDate = value; }
         }
 
         public void ResetNextDate()
