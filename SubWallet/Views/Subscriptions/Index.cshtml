@@ -49,19 +49,21 @@ document.getElementById('subscriptionForm').addEventListener('submit', async fun
 
     document.getElementById('result').innerText = JSON.stringify(data, null, 2);
 });
-</script>
 
+</script>
 <!-- FullCalendar Styles + Scripts -->
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+
 <div id='calendar'></div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      events: '/api/subscriptions/calendar' // backend endpoint we’ll build next
+      events: '/api/subscriptions/calendar' // ← uses your controller/endpoint
     });
 
     calendar.render();
@@ -74,6 +76,7 @@ document.getElementById('subscriptionForm').addEventListener('submit', async fun
     margin: 40px auto;
   }
 </style>
+
 
 
    
