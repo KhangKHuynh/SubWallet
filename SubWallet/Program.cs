@@ -4,6 +4,7 @@ using SubWallet.Models;
 using WebApplication1.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -14,31 +15,28 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Get the connection string
+// Database setup
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-// Use it in your DbContext registration
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddAuthorization(); 
-
-
 var app = builder.Build();
 
+// Apply migrations automatically
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate(); // Applies any pending migrations and creates DB if missing
+    db.Database.Migrate();
+    Console.WriteLine("Connected to DB: " + db.Database.GetDbConnection().Database);
+
 }
 
-// Configure the HTTP request pipeline.
+// Middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -46,20 +44,13 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-
-    endpoints.MapControllers(); // ← this line enables `[Route("api/...")]` controllers
-});
-
 app.UseCors();
 app.UseAuthorization();
-app.MapControllers();
+
+// Route mapping
+app.MapControllers(); // API controllers
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+app.Run(); 

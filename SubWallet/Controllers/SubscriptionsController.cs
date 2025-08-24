@@ -17,33 +17,25 @@ namespace SubWallet.Controllers
         public IActionResult Index()
         {
             var subscriptions = _context.Subscriptions.ToList();
-            return Ok(subscriptions);
+            return View(subscriptions);
         }
 
-        // POST: api/subscriptions/add
-        [HttpPost("add")]
-        public IActionResult Add([FromBody] Subscription subscription)
+        public IActionResult Add()
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            _context.Subscriptions.Add(subscription);
-            _context.SaveChanges();
-
-            return Ok(subscription);
+            return View();
         }
-        
-        // GET: api/subscriptions/calendar
-        [HttpGet("calendar")]
-        public IActionResult GetCalendarEvents()
+
+        [HttpPost]
+        public IActionResult Add(Subscription subscription)
         {
-            var events = _context.Subscriptions.Select(s => new
+            if (ModelState.IsValid)
             {
-                title = s.Name + " - $" + s.Cost,
-                start = s.StartDate.ToString("yyyy-MM-dd") // or use NextDate if you’ve got it
-            }).ToList();
+                _context.Subscriptions.Add(subscription);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
 
-            return Ok(events);
+            return View(subscription);
         }
     }
 }
