@@ -13,10 +13,10 @@ namespace SubWallet.Models
 
     public class Subscription
     {
-        public required int ID { get; set; }
-        public required string Name { get; set; }
-        public required decimal Cost { get; set; }
-        public required DateTime StartDate { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public decimal Cost { get; set; }
+        public  DateTime StartDate { get; set; }
         public BillingCycle Cycle { get; set; }
 
         private DateTime? _nextDate;

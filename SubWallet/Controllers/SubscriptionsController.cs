@@ -13,76 +13,100 @@ namespace SubWallet.Controllers
             _context = context;
         }
 
-        // MVC route for /subscriptions
-        public IActionResult Index()
+        // ✅ Helper method to normalize subscription costs into monthly values
+        private List<Subscription> GetNormalizedSubscriptions()
         {
             var subscriptions = _context.Subscriptions.ToList();
-            return View(subscriptions);
-            {
-                // Convert all costs to monthly equivalents
-                foreach (var sub in subscriptions)
-                {
-                    decimal monthlyCost = sub.Cost;
-                    switch (sub.Cycle)
-                    {
-                        case BillingCycle.Weekly:
-                            monthlyCost = sub.Cost * 52 / 12m; // ~4.33 weeks per month
-                            break;
-                        case BillingCycle.BiWeekly:
-                            monthlyCost = sub.Cost * 26 / 12m; // ~2.17 cycles per month
-                            break;
-                        case BillingCycle.Monthly:
-                            monthlyCost = sub.Cost;
-                            break;
-                        case BillingCycle.Yearly:
-                            monthlyCost = sub.Cost / 12m;
-                            break;
-                    }
 
-                    // store the converted cost temporarily for chart
-                    sub.Cost = Math.Round(monthlyCost, 2);
+            foreach (var sub in subscriptions)
+            {
+                decimal monthlyCost = sub.Cost;
+
+                switch (sub.Cycle)
+                {
+                    case BillingCycle.Weekly:
+                        monthlyCost = sub.Cost * 52 / 12m;
+                        break;
+                    case BillingCycle.BiWeekly:
+                        monthlyCost = sub.Cost * 26 / 12m;
+                        break;
+                    case BillingCycle.Monthly:
+                        monthlyCost = sub.Cost;
+                        break;
+                    case BillingCycle.Yearly:
+                        monthlyCost = sub.Cost / 12m;
+                        break;
                 }
 
-                return View(subscriptions);
+                sub.Cost = Math.Round(monthlyCost, 2);
             }
 
+            return subscriptions;
         }
 
-        public IActionResult Add()
+        // ✅ Only one Index() method
+        public IActionResult Index()
         {
-            return View();
+            var model = new SubscriptionsViewModel
+            {
+                Subscriptions = GetNormalizedSubscriptions(),
+                NewSubscription = new Subscription() // for the "Add" form
+            };
+
+            return View(model);
         }
 
+        // ✅ Add Subscription
         [HttpPost]
-        public IActionResult Add(Subscription subscription)
+        public IActionResult Add(SubscriptionsViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var subscription = model.NewSubscription;
+
+                // Prevent duplicate names
+                bool exists = _context.Subscriptions
+                    .Any(s => s.Name.ToLower() == subscription.Name.ToLower());
+
+                if (exists)
+                {
+                    ModelState.AddModelError("NewSubscription.Name", "A subscription with this name already exists.");
+                    model.Subscriptions = GetNormalizedSubscriptions();
+                    return View("Index", model);
+                }
+
                 _context.Subscriptions.Add(subscription);
                 _context.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
-            return View(subscription);
+            // Re-populate subscriptions if validation fails
+            model.Subscriptions = GetNormalizedSubscriptions();
+            return View("Index", model);
         }
+
+        // ✅ Delete Subscription
         [HttpPost]
-        public IActionResult Delete(string name)
+        public IActionResult Delete(int id)
         {
-            var sub = _context.Subscriptions.FirstOrDefault(s => s.Name == name);
+            var sub = _context.Subscriptions.FirstOrDefault(s => s.ID == id);
+
             if (sub != null)
             {
                 _context.Subscriptions.Remove(sub);
                 _context.SaveChanges();
             }
 
-            // Redirect back to index so the chart refreshes
-            return RedirectToAction("Index");
+            return RedirectToAction("Index"); // Chart will always refresh
         }
-        
+
+        // ✅ Edit Subscription
         [HttpPost]
-        public IActionResult Edit(string name, decimal cost, BillingCycle cycle)
+        public IActionResult Edit(int id, decimal cost, BillingCycle cycle)
         {
-            var sub = _context.Subscriptions.FirstOrDefault(s => s.Name == name);
+            var sub = _context.Subscriptions.FirstOrDefault(s => s.ID == id);
+
             if (sub != null)
             {
                 sub.Cost = cost;
@@ -90,9 +114,7 @@ namespace SubWallet.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index"); // Chart will always refresh
         }
-        
     }
-    
 }

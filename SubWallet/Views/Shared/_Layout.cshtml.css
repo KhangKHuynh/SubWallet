@@ -23,6 +23,14 @@ a {
   border-color: #1861ac;
 }
 
+body {
+    background-color: #AFECE7 
+    font-family: Arial, sans-serif; /* optional: set a default font */
+    margin: 0; /* optional: remove default margin */
+    padding: 0; /* optional: remove default padding */
+}
+
+
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
@@ -46,3 +54,4 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+

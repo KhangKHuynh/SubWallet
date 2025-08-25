@@ -1,91 +1,122 @@
-@model List<SubWallet.Models.Subscription>
+@model SubWallet.Models.SubscriptionsViewModel
+
 @{
     ViewData["Title"] = "Subscriptions";
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
 }
 
 <h1>Subscriptions</h1>
 
-<form asp-action="Add" asp-controller="Subscriptions" method="post">
-    <label for="Name">Name:</label>
-    <input type="text" id="Name" name="Name" required />
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form asp-action="Add" asp-controller="Subscriptions" method="post">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label asp-for="NewSubscription.Name" class="form-label">Name</label>
+                    <input asp-for="NewSubscription.Name" class="form-control" />
+                    <span asp-validation-for="NewSubscription.Name" class="text-danger"></span>
+                </div>
 
-    <label for="Cost">Cost:</label>
-    <input type="number" id="Cost" name="Cost" step="0.01" required />
+                <div class="col-md-2">
+                    <label asp-for="NewSubscription.Cost" class="form-label">Cost</label>
+                    <input asp-for="NewSubscription.Cost" type="number" step="0.01" class="form-control" />
+                </div>
 
-    <label for="StartDate">Start Date:</label>
-    <input type="date" id="StartDate" name="StartDate" required />
+                <div class="col-md-3">
+                    <label asp-for="NewSubscription.StartDate" class="form-label">Start Date</label>
+                    <input asp-for="NewSubscription.StartDate" type="date" class="form-control" />
+                </div>
 
-    <label for="Cycle">Billing Cycle:</label>
-    <select id="Cycle" name="Cycle">
-        <option value="Weekly">Weekly</option>
-        <option value="BiWeekly">BiWeekly</option>
-        <option value="Monthly">Monthly</option>
-        <option value="Yearly">Yearly</option>
-    </select>
+                <div class="col-md-2">
+                    <label asp-for="NewSubscription.Cycle" class="form-label">Billing Cycle</label>
+                    <select asp-for="NewSubscription.Cycle" class="form-select">
+                        <option value="Weekly">Weekly</option>
+                        <option value="BiWeekly">BiWeekly</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Yearly">Yearly</option>
+                    </select>
+                </div>
 
-    <button type="submit">Add Subscription</button>
-</form>
-
-<hr />
-
-<!-- Chart + Actions side by side -->
-<div style="display:flex; gap:30px; align-items:flex-start; margin-top:20px;">
-    <!-- Chart -->
-    <div style="flex:2;">
-        <canvas id="subscriptionsChart" style="max-width:600px; height:300px;"></canvas>
-    </div>
-
-    <!-- Actions (Delete + Edit) -->
-    <div style="flex:1;">
-        <!-- Delete -->
-        <h2>Delete Subscription</h2>
-        <form asp-action="Delete" asp-controller="Subscriptions" method="post">
-            <label for="deleteSelect">Select:</label>
-            <select id="deleteSelect" name="Name">
-                @foreach (var sub in Model)
-                {
-                    <option value="@sub.Name">@sub.Name</option>
-                }
-            </select>
-            <button type="submit">Delete</button>
-        </form>
-
-        <hr />
-
-        <!-- Edit -->
-        <h2>Edit Subscription</h2>
-        <form asp-action="Edit" asp-controller="Subscriptions" method="post">
-            <label for="editSelect">Select:</label>
-            <select id="editSelect" name="Name">
-                @foreach (var sub in Model)
-                {
-                    <option value="@sub.Name">@sub.Name</option>
-                }
-            </select>
-
-            <label for="NewCost">New Cost:</label>
-            <input type="number" id="NewCost" name="Cost" step="0.01" required />
-
-            <label for="NewCycle">New Cycle:</label>
-            <select id="NewCycle" name="Cycle">
-                <option value="Weekly">Weekly</option>
-                <option value="BiWeekly">BiWeekly</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Yearly">Yearly</option>
-            </select>
-
-            <button type="submit">Update</button>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-success w-100">Add</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
+
+<hr />
+<div class="container mt-4">
+    <div class="row">
+        <!-- Chart -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <canvas id="subscriptionsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5">Delete Subscription</h2>
+                    <form asp-action="Delete" asp-controller="Subscriptions" method="post">
+                        <label for="deleteSelect">Select:</label>
+                        <select id="deleteSelect" name="id" class="form-control mb-2">
+                            @foreach (var sub in Model.Subscriptions)
+                            {
+                                <option value="@sub.Name">@sub.Name</option>
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="h5">Edit Subscription</h2>
+                    <form asp-action="Edit" asp-controller="Subscriptions" method="post">
+                        <label for="editSelect">Select:</label>
+                        <select id="editSelect" name="Name" class="form-control mb-2">
+                            @foreach (var sub in Model.Subscriptions)
+                            {
+                                <option value="@sub.Name">@sub.Name</option>
+                            }
+                        </select>
+
+                        <label for="NewCost">New Cost:</label>
+                        <input type="number" id="NewCost" name="Cost" step="0.01" required class="form-control mb-2" />
+
+                        <label for="NewCycle">New Cycle:</label>
+                        <select id="NewCycle" name="Cycle" class="form-control mb-2">
+                            <option value="Weekly">Weekly</option>
+                            <option value="BiWeekly">BiWeekly</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+
+                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('subscriptionsChart').getContext('2d');
 
-    const labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(s => s.Name)));
-    const data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(s => s.Cost)));
+    const labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Subscriptions.Select(s => s.Name)));
+    const data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Subscriptions.Select(s => s.Cost)));
 
     new Chart(ctx, {
         type: 'bar',
@@ -106,3 +137,4 @@
         }
     });
 </script>
+
