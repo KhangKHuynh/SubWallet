@@ -1,13 +1,9 @@
-
-@{
-ViewData["Title"] = "Subscriptions";
-}
 @model List<SubWallet.Models.Subscription>
 @{
     ViewData["Title"] = "Subscriptions";
 }
 
-<h1>New Subscription</h1>
+<h1>Subscriptions</h1>
 
 <form asp-action="Add" asp-controller="Subscriptions" method="post">
     <label for="Name">Name:</label>
@@ -32,22 +28,71 @@ ViewData["Title"] = "Subscriptions";
 
 <hr />
 
-<!-- Chart -->
-<canvas id="subscriptionsChart"></canvas>
+<!-- Chart + Actions side by side -->
+<div style="display:flex; gap:30px; align-items:flex-start; margin-top:20px;">
+    <!-- Chart -->
+    <div style="flex:2;">
+        <canvas id="subscriptionsChart" style="max-width:600px; height:300px;"></canvas>
+    </div>
+
+    <!-- Actions (Delete + Edit) -->
+    <div style="flex:1;">
+        <!-- Delete -->
+        <h2>Delete Subscription</h2>
+        <form asp-action="Delete" asp-controller="Subscriptions" method="post">
+            <label for="deleteSelect">Select:</label>
+            <select id="deleteSelect" name="Name">
+                @foreach (var sub in Model)
+                {
+                    <option value="@sub.Name">@sub.Name</option>
+                }
+            </select>
+            <button type="submit">Delete</button>
+        </form>
+
+        <hr />
+
+        <!-- Edit -->
+        <h2>Edit Subscription</h2>
+        <form asp-action="Edit" asp-controller="Subscriptions" method="post">
+            <label for="editSelect">Select:</label>
+            <select id="editSelect" name="Name">
+                @foreach (var sub in Model)
+                {
+                    <option value="@sub.Name">@sub.Name</option>
+                }
+            </select>
+
+            <label for="NewCost">New Cost:</label>
+            <input type="number" id="NewCost" name="Cost" step="0.01" required />
+
+            <label for="NewCycle">New Cycle:</label>
+            <select id="NewCycle" name="Cycle">
+                <option value="Weekly">Weekly</option>
+                <option value="BiWeekly">BiWeekly</option>
+                <option value="Monthly">Monthly</option>
+                <option value="Yearly">Yearly</option>
+            </select>
+
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('subscriptionsChart').getContext('2d');
 
-    // Pull labels and data from Razor model
     const labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(s => s.Name)));
     const data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(s => s.Cost)));
 
-    const subscriptionsChart = new Chart(ctx, {
+    new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Monthly Cost ($)',
+                label: 'Monthly Cost (U.S Dollars)',
                 data: data,
                 borderWidth: 1,
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
@@ -61,6 +106,3 @@ ViewData["Title"] = "Subscriptions";
         }
     });
 </script>
-
-
-
