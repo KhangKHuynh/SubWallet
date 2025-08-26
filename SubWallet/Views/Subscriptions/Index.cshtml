@@ -70,7 +70,7 @@
                         <select id="deleteSelect" name="id" class="form-control mb-2">
                             @foreach (var sub in Model.Subscriptions)
                             {
-                                <option value="@sub.Name">@sub.Name</option>
+                                <option value="@sub.ID">@sub.Name</option>
                             }
                         </select>
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -83,10 +83,10 @@
                     <h2 class="h5">Edit Subscription</h2>
                     <form asp-action="Edit" asp-controller="Subscriptions" method="post">
                         <label for="editSelect">Select:</label>
-                        <select id="editSelect" name="Name" class="form-control mb-2">
+                        <select id="editSelect" name="id" class="form-control mb-2">
                             @foreach (var sub in Model.Subscriptions)
                             {
-                                <option value="@sub.Name">@sub.Name</option>
+                                <option value="@sub.ID">@sub.Name</option>
                             }
                         </select>
 
@@ -117,7 +117,7 @@
 
     const labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Subscriptions.Select(s => s.Name)));
     const data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Subscriptions.Select(s => s.Cost)));
-
+    
     new Chart(ctx, {
         type: 'bar',
         data: {
@@ -130,11 +130,30 @@
             }]
         },
         options: {
-            responsive: true,
             plugins: {
-                legend: { position: 'top' }
+                legend: {
+                    position: 'top',
+                    labels: {
+                        generateLabels: (chart) => {
+                            const defaults = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                            let sum = 0;
+                            for (let i = 0; i < chart.data.datasets[0].data.length; i++) {
+                                sum += chart.data.datasets[0].data[i];
+                            }
+                            return [
+                                ...defaults,
+                                {
+                                    text: `Total A Month: $${sum.toFixed(2)}`,
+                                    fillStyle: 'transparent',
+                                    strokeStyle: 'transparent'
+                                }
+                            ];
+                        }
+                    }
+                }
             }
         }
     });
+    
 </script>
 
