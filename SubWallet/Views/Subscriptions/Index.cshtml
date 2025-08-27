@@ -8,7 +8,7 @@
     <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
 }
 
-<h1>Subscriptions</h1>
+<h1></h1>
 
 <div class="card shadow-sm mb-4">
     <div class="card-body">
@@ -126,7 +126,7 @@
                 label: 'Monthly Cost (U.S Dollars)',
                 data: data,
                 borderWidth: 1,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                backgroundColor: ['#90C2E7']
             }]
         },
         options: {
@@ -134,12 +134,15 @@
                 legend: {
                     position: 'top',
                     labels: {
+                        
                         generateLabels: (chart) => {
+                            
                             const defaults = Chart.defaults.plugins.legend.labels.generateLabels(chart);
                             let sum = 0;
                             for (let i = 0; i < chart.data.datasets[0].data.length; i++) {
                                 sum += chart.data.datasets[0].data[i];
                             }
+                            
                             return [
                                 ...defaults,
                                 {

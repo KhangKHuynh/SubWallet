@@ -24,11 +24,10 @@ a {
 }
 
 body {
-    background-color: #AFECE7;
-    font-family: Arial, sans-serif; /* optional: set a default font */
-    margin: 0; /* optional: remove default margin */
-    padding: 0; /* optional: remove default padding */
+    font-family: 'Poppins', sans-serif;
 }
+
+
 
 
 .border-top {

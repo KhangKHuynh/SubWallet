@@ -44,7 +44,7 @@ namespace SubWallet.Controllers
             return subscriptions;
         }
 
-        // ✅ Only one Index() method
+        
         public IActionResult Index()
         {
             var model = new SubscriptionsViewModel
@@ -114,7 +114,7 @@ namespace SubWallet.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index"); // Chart will always refresh
+            return RedirectToAction("Index"); 
         }
     }
 }
