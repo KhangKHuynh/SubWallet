@@ -54,3 +54,14 @@ button.accept-policy {
   line-height: 60px;
 }
 
+.bg-gradient {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    width: 100%;
+    min-height: calc(100vh - 70px); /* adjust for navbar height */
+    display: flex;                  /* new */
+    justify-content: center;        /* horizontal centering */
+    align-items: center;            /* vertical centering */
+    flex-direction: column;         /* stack content vertically */
+}
+
+
