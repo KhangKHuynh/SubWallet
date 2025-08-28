@@ -1,7 +1,7 @@
 using SubWallet.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApplication1.Models;
+namespace SubWallet.Models;
 
 public class AppDbContext : DbContext
 {

@@ -1,7 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
 using SubWallet.Models;
-using WebApplication1.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +15,9 @@ builder.Services.AddCors(options =>
 });
 
 // Database setup
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString)); 
 
 builder.Services.AddControllersWithViews();
 

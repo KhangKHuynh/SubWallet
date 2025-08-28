@@ -14,23 +14,18 @@
     <div class="card-body">
         <form asp-action="Add" asp-controller="Subscriptions" method="post">
             <div class="row g-3">
-                <div class="col-md-3">
+                <div class="col">
                     <label asp-for="NewSubscription.Name" class="form-label">Name</label>
                     <input asp-for="NewSubscription.Name" class="form-control" />
                     <span asp-validation-for="NewSubscription.Name" class="text-danger"></span>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col">
                     <label asp-for="NewSubscription.Cost" class="form-label">Cost</label>
                     <input asp-for="NewSubscription.Cost" type="number" step="0.01" class="form-control" />
                 </div>
 
-                <div class="col-md-3">
-                    <label asp-for="NewSubscription.StartDate" class="form-label">Start Date</label>
-                    <input asp-for="NewSubscription.StartDate" type="date" class="form-control" />
-                </div>
-
-                <div class="col-md-2">
+                <div class="col">
                     <label asp-for="NewSubscription.Cycle" class="form-label">Billing Cycle</label>
                     <select asp-for="NewSubscription.Cycle" class="form-select">
                         <option value="Weekly">Weekly</option>
@@ -40,7 +35,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-2 d-flex align-items-end">
+                <div class="col d-flex align-items-end">
                     <button type="submit" class="btn btn-success w-100">Add</button>
                 </div>
             </div>
