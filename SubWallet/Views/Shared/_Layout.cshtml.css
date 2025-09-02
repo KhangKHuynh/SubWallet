@@ -29,8 +29,8 @@ a {
 
 body {
     font-family: 'Poppins', sans-serif;
-    color: #212529; /* Bootstrap’s default dark gray text */
-    background-color: #fff; /* ensures background is white by default */
+    color: #212529;
+    background-color: #fff; 
 }
 
 
