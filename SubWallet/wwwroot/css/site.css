@@ -20,3 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.custom-navbar {
+    background: #59CD90;
+}
+
+.bg-gradient-custom {
+    background: linear-gradient(90deg, #725E54, #96939B, #D5DCF9);
+}
