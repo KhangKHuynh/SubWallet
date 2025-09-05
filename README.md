@@ -5,9 +5,6 @@ The Technology that I used to produce such a product was c# and Entity Framwork 
 
 CSS (bootstrap framework) /HTML and one JS Library (chart.js) for the frontend and Razor Pages (.cshtml) letting me mix C# and HTML code. 
 
--- How Razor works 
-*Dynamically generates HTML based on my backend and then renders pure HTML in the browser*
-
 I used Asp.Net Core as my framwork but with the MVC structure (Models, Views, Controllers) 
 
 To host a private SQL server for my DB i used the Docker Platform and it communicates with EF Core so there's no need for raw SQL code. 
