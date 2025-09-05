@@ -1,5 +1,5 @@
 # SubWallet
-My project is called SubWallet and It's purpose is to serve as a Web Applciation for users to enter in any expense that they deem fit. I got inspiration for the name from the subscriptions that everyone has nowadays instead of cable. 
+Web Applciation for users to enter in any expense that they deem fit. I got inspiration for the name from the subscriptions that everyone has nowadays instead of cable. 
 
 The Technology that I used to produce such a product was c# and Entity Framwork Core for my backend AKA using an ORM. 
 
