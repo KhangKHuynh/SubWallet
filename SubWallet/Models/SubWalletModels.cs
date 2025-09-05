@@ -1,6 +1,4 @@
 
-using Microsoft.EntityFrameworkCore;
-
 namespace SubWallet.Models
 {
     public enum BillingCycle
@@ -41,7 +39,7 @@ namespace SubWallet.Models
                     case BillingCycle.Yearly:
                         return StartDate.AddDays(365);
                     default:
-                        return StartDate;
+                        return StartDate; // not used but will be added in the future 
                 }
 
             }
@@ -50,7 +48,7 @@ namespace SubWallet.Models
 
         public void ResetNextDate()
         {
-            _nextDate = null;
+            _nextDate = null; //not used but for future project Ideas 
         }
     }
 }

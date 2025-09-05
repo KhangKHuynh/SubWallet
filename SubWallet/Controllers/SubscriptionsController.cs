@@ -1,8 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using SubWallet.Models;
-using WebApplication1.Models;
 
 namespace SubWallet.Controllers
+//GOALS 
+//normalizes subscription costs so the chart always shows monthly totals.
+// 
+// Index loads both the list of subscriptions and an empty model for the Add form.
+// 
+// The Add action checks for duplicates, adds new subscriptions, and reloads the page.
+// 
+// The Delete action removes subscriptions instantly.
+// 
+// The Edit action allows changing cost or billing cycle, and everything is saved in the database via EF Core.
 {
     public class SubscriptionsController : Controller
     {
@@ -13,7 +22,7 @@ namespace SubWallet.Controllers
             _context = context;
         }
 
-        // ✅ Helper method to normalize subscription costs into monthly values
+        // Turns subscriptions into monthly costs depending on cycle 
         private List<Subscription> GetNormalizedSubscriptions()
         {
             var subscriptions = _context.Subscriptions.ToList();
