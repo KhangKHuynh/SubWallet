@@ -5,4 +5,7 @@ riderModule.iml
 /_ReSharper.Caches/.idea/
 .idea/
 .idea/jsLibraryMappings.xml
- .idea/.idea.SubWallet/.idea/jsLibraryMappings.xml
+.idea/.idea.SubWallet/.idea/jsLibraryMappings.xml
+appsettings.json
+appsettings.Development.json
+Migrations/
